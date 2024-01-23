@@ -5,6 +5,8 @@ import * as Log from "../utils/log.util";
 class Config {
     PORT = "9099";
     HOST = "http://localhost:9099";
+    DYNAMODB_REGION = "us-west-2";
+    DYNAMODB_TABLE_NAME = "PostTable";
 }
 
 // ============================= //
@@ -44,7 +46,6 @@ const Configurations: { [key: string]: () => Config } = {
     }),
     [CONFIG_ENVS.STG]: () => ({
         ...new Config(),
-        // TODO: Fill in staging media base url
         MEDIA_BASE_URL: "",
         ENV: CONFIG_ENVS.STG
     }),
