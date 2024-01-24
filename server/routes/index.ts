@@ -1,11 +1,13 @@
 import { Router } from "express";
 import Blog from "./blog.route";
+import Login from "./login.route";
 
 const router = Router();
 
 // =============================== //
 // Post-Login routes (requires session)
 // =============================== //
+router.use(Login);
 
 // Verify valid session
 /**

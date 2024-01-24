@@ -1,7 +1,7 @@
 import { Typography } from "@mui/material";
 
-const hc = () => {
+const HC = () => {
     return <Typography>TEST</Typography>;
 };
 
-export default hc;
+export default HC;

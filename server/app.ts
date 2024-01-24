@@ -18,9 +18,7 @@ app.get("/hc", (req: express.Request, res: express.Response) => {
     res.end("OKk");
 });
 
-app.listen(CONFIG.PORT, () => {
-    Log.info(`Server start up, running on port: ${CONFIG.PORT}`);
-});
+app.use(express.static(path.join(__dirname, "/../../public")));
 
 // =============================== //
 // Middlewares
@@ -39,6 +37,7 @@ app.use(cors());
 app.use(router);
 
 app.get(`/*`, function (req, res) {
+    console.log(path.join(__dirname, "../client", "index.html"));
     res.sendFile(path.join(__dirname, "../client", "index.html"));
 });
 
@@ -72,4 +71,8 @@ app.use((err: Error, req: Request, res: Response, _next: NextFunction) => {
             Object.keys(errData).length > 0 ? errData : undefined
         )
     );
+});
+
+app.listen(CONFIG.PORT, () => {
+    Log.info(`Server start up, running on port: ${CONFIG.PORT}`);
 });
