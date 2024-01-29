@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 import {
     Navigate,
     Route,
@@ -8,7 +8,6 @@ import {
 } from "react-router-dom";
 import useUserProfile from "./hooks/useUserProfile";
 import LoginRoute from "./pages/login/Login.route";
-import HC from "./pages/hc";
 
 function RequireAuth({
     navigateAfterAuth,
@@ -17,8 +16,10 @@ function RequireAuth({
     children?: React.ReactNode;
     navigateAfterAuth?: string;
 }) {
-    const { isLoggedIn } = useUserProfile();
-
+    const { isLoggedIn, isLoading } = useUserProfile();
+    if (isLoading) {
+        return <CircularProgress />;
+    }
     if (!isLoggedIn) {
         return <Navigate to="/login" replace={true} />;
     }
@@ -36,19 +37,18 @@ function App() {
             <Route path="/">
                 <Route
                     index
-                    element={<Navigate to={"/admin/hc"} replace={true} />}
+                    element={<Navigate to={"/admin"} replace={true} />}
                 />
                 <Route path="login" element={<LoginRoute />} />
                 <Route path="admin">
                     <Route
-                        path="hc"
                         index
                         element={
                             <RequireAuth>
-                                <HC />
+                                <div>test</div>
                             </RequireAuth>
                         }
-                    ></Route>
+                    />
                 </Route>
             </Route>
         )

@@ -31,5 +31,8 @@ export default defineConfig({
                 warn(warning);
             }
         }
+    },
+    optimizeDeps: {
+        include: ["@emotion/styled"]
     }
 });

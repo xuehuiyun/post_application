@@ -1,7 +1,7 @@
 import { asRouter, ExpressRouter, Get } from "../utils/routes.util";
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import * as Log from "../utils/log.util";
-import { google, Auth } from "googleapis";
+import { google } from "googleapis";
 import { CookieNames } from "../interface/consts.interface";
 import { generateSession } from "../utils/session.util";
 
@@ -50,15 +50,11 @@ class Login {
         res: Response
     ): Promise<void> {
         try {
-            Log.info("req: ", req.query);
             const { code } = req.query;
 
-            // Exchange authorization code for tokens
             const { tokens } = await oauth2Client.getToken(code as string);
             oauth2Client.setCredentials(tokens);
 
-            Log.info("token: ", tokens);
-            // Example: Get user profile using Google People API
             const peopleApi = google.people({
                 version: "v1",
                 auth: oauth2Client
@@ -70,8 +66,6 @@ class Login {
 
             const profile: GoogleProfile =
                 peopleApiResponse.data as GoogleProfile;
-            Log.info("profile: ", profile);
-            // Generate a session cookie (using JWT or your preferred method)
             const sessionCookie = await generateSession(
                 {
                     userId: profile.resourceName,
@@ -80,12 +74,9 @@ class Login {
                 },
                 LOGIN_ENC_KEY
             );
-            Log.info("cookie: ", sessionCookie);
 
-            // Set the session cookie in the response
             res.cookie(CookieNames.SSO_COOKIE, sessionCookie);
 
-            // Close the window using a script
             res.setHeader("content-type", "text/html");
             res.send("<script>window.close();</script>");
         } catch (error) {

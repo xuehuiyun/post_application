@@ -10,10 +10,13 @@
         "build-storybook": "storybook build"
     },
     "dependencies": {
+        "@emotion/react": "^11.11.3",
+        "@emotion/styled": "^11.11.0",
         "@mui/material": "^5.14.19",
         "@tanstack/react-query": "^5.10.0",
         "@tanstack/react-table": "^8.8.5",
         "dayjs": "^1.11.7",
+        "jotai-tanstack-query": "^0.8.3",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "react-router-dom": "^6.8.1",

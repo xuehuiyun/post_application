@@ -27,6 +27,13 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(cors());
 
+// Log id middleware
+app.use((req: Request, res: Response, next: NextFunction): void => {
+    const logId = req.headers.req_logger_id as string;
+    Log.info("Incoming request ==> ", logId, "--", req.method, req.originalUrl);
+    next();
+});
+
 // =============================== //
 // API routes (need a valid session)
 // =============================== //

@@ -66,7 +66,7 @@ const LoginScreen = ({ onLoginClick }: LoginScreenProps) => {
                             textAlign: "center"
                         }}
                     >
-                        Samsung Developer Admin Portal
+                        Blog App Admin Portal
                     </Typography>
                     <Box
                         sx={{

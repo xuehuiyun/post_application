@@ -1,20 +1,22 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const useUserProfile = () => {
+    const [isLoading, setIsLoading] = useState(true);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     useEffect(() => {
-        // Check if a session cookie exists
-        const sessionCookie = getCookie("cookiename");
+        const timeoutId = setTimeout(() => {
+            const sessionCookie = getCookie("SDP_SSID");
+            setIsLoggedIn(!!sessionCookie);
+            setIsLoading(false);
+        }, 2000);
 
-        // Update the state based on the presence of the session cookie
-        setIsLoggedIn(!!sessionCookie);
-    }, []); // Empty dependency array means this effect runs once when the component mounts
-    console.log("is logged in: ", isLoggedIn);
-    return { isLoggedIn };
+        return () => clearTimeout(timeoutId);
+    }, []);
+
+    return { isLoading, isLoggedIn };
 };
 
-// Function to get a cookie by name
 const getCookie = (name: string) => {
     const cookies = document.cookie.split(";");
     for (const cookie of cookies) {

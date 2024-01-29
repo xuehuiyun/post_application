@@ -1,10 +1,15 @@
+import { CssBaseline } from "@mui/material";
 import {
     QueryCache,
     QueryClient,
     QueryClientProvider
 } from "@tanstack/react-query";
-import React from "react";
+import { queryClientAtom } from "jotai-tanstack-query";
+import { Provider } from "jotai/react";
+import { useHydrateAtoms } from "jotai/react/utils";
 import ReactDOM from "react-dom/client";
+
+import React from "react";
 import App from "./App";
 
 const FIVE_MINUTES_IN_MS = 1000 * 60 * 5;
@@ -48,12 +53,22 @@ export const queryClient = new QueryClient({
     })
 });
 
+const HydrateAtoms = ({ children }: { children: JSX.Element }) => {
+    useHydrateAtoms([[queryClientAtom, queryClient]]);
+    return children;
+};
+
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <React.StrictMode>
         <QueryClientProvider client={queryClient}>
-            <>
-                <App />
-            </>
+            <Provider>
+                <CssBaseline />
+                <HydrateAtoms>
+                    <>
+                        <App />
+                    </>
+                </HydrateAtoms>
+            </Provider>
         </QueryClientProvider>
     </React.StrictMode>
 );

@@ -72,7 +72,7 @@ export async function generateSession(
             if (error) {
                 reject(error);
             } else {
-                resolve(token || "");
+                resolve(token ?? "");
             }
         });
     });
