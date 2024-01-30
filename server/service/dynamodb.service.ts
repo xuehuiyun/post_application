@@ -7,6 +7,7 @@ import {
 import { DynamoDB } from "aws-sdk";
 import { CreateItemReturnType } from "../interface/dynamodb.interface";
 import * as Log from "../utils/log.util";
+import { AttributeMap } from "aws-sdk/clients/dynamodb";
 
 export interface FileUploadData {
     filename: string;
@@ -15,6 +16,11 @@ export interface FileUploadData {
 }
 export interface DynamoDBItem {
     [s: string]: AttributeValue.SMember;
+}
+
+export interface ItemInterface {
+    postId: string;
+    content?: string;
 }
 export interface DynamoDBQueryParams {
     keyConditionExpression: string;
@@ -31,6 +37,9 @@ export interface DynamoDBManager {
         sortKey?: string
     ) => Promise<DynamoDBItem | null>;
 
+    // Scan operation
+    getList: () => Promise<ItemInterface[]>;
+
     // // Update operation
     // updateItem: (
     //     primaryKey: string,
@@ -43,9 +52,6 @@ export interface DynamoDBManager {
 
     // // Query operation
     // queryItems: (queryParams: DynamoDBQueryParams) => Promise<DynamoDBItem[]>;
-
-    // // Scan operation
-    // scanItems: () => Promise<DynamoDBItem[]>;
 }
 
 class DynamoFileManager implements DynamoDBManager {
@@ -101,7 +107,7 @@ class DynamoFileManager implements DynamoDBManager {
     ): Promise<DynamoDBItem | null> {
         const TAG = "DYNAMODB_GET_ITEM";
         const key: Record<string, AttributeValue> = {
-            postId: { S: primaryKey }, // Assuming 'S' for string type, adjust accordingly
+            postId: { S: primaryKey },
             ...(sortKey && { sortKey: { S: sortKey } })
         };
 
@@ -128,31 +134,41 @@ class DynamoFileManager implements DynamoDBManager {
                 throw new Error("Unknown Error");
             }
         }
-
-        // return result.Item as DynamoDBItem | null;
     }
 
-    // async updateItem(primaryKey: string, sortKey: string, updatedAttributes: Partial<DynamoDBItem>): Promise<void> {
-    //     const key = { primaryKey, sortKey };
-
-    //     const updateExpression = 'SET ' + Object.keys(updatedAttributes)
-    //       .map(attr => `#${attr} = :${attr}`)
-    //       .join(', ');
-
-    //     const expressionAttributeValues = Object.entries(updatedAttributes)
-    //       .reduce((acc, [key, value]) => ({ ...acc, [`:${key}`]: value }), {});
-
-    //     const expressionAttributeNames = Object.keys(updatedAttributes)
-    //       .reduce((acc, key) => ({ ...acc, [`#${key}`]: key }), {});
-
-    //     await this.dynamoDBClient.send(new UpdateItemCommand({
-    //       TableName: 'YourTableName',
-    //       Key: key,
-    //       UpdateExpression: updateExpression,
-    //       ExpressionAttributeValues: expressionAttributeValues,
-    //       ExpressionAttributeNames: expressionAttributeNames,
-    //     }));
-    //   }
+    async getList(): Promise<ItemInterface[]> {
+        const TAG = "DYNAMODB_GET_LIST";
+        Log.info(TAG);
+        try {
+            const result = await this.dynamoDBClient
+                .scan({
+                    TableName: this.tableName
+                })
+                .promise();
+            Log.info("result: ", result);
+            const items: ItemInterface[] =
+                result.Items?.map((item: AttributeMap) => {
+                    return {
+                        postId: item.postId.S ?? "",
+                        content: item.content.S
+                    };
+                }) || [];
+            return items;
+        } catch (err) {
+            if (err instanceof DynamoDBServiceException) {
+                Log.error("DynamoDB getList error: ", err);
+                throw new Error(
+                    JSON.stringify({
+                        StatusCode: err.$metadata.httpStatusCode,
+                        StatusMsg: err.name,
+                        Data: err.message
+                    })
+                );
+            } else {
+                throw new Error("Unknown Error");
+            }
+        }
+    }
 }
 
 export default DynamoFileManager;

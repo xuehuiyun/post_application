@@ -1,7 +1,11 @@
 import { CONFIG } from "../conf/config";
-import { PostGetItemResponse } from "../interface/service.interface";
+import {
+    PostGetItemResponse,
+    PostGetListResponse
+} from "../interface/post.interface";
 import DynamoFileManager, { DynamoDBItem } from "./dynamodb.service";
 import * as Log from "../utils/log.util";
+import { AttributeMap } from "aws-sdk/clients/dynamodb";
 
 const dynamodb = new DynamoFileManager(
     CONFIG.DYNAMODB_REGION,
@@ -26,6 +30,29 @@ class PostService {
             postId: item.postId.S,
             content: item.content.S
         };
+    }
+
+    async getList(): Promise<PostGetListResponse> {
+        const TAG = "OBJECT_SERVICE_GET_LIST";
+        Log.info(TAG, " Getting file list from dynamoDB");
+        const list = await dynamodb.getList();
+
+        if (!list || list.length === 0) {
+            throw new Error(
+                JSON.stringify({
+                    StatusCode: 400,
+                    StatusMsg: "Error getting file list"
+                })
+            );
+        }
+        Log.info("list: ", list);
+        // return list.map((item: AttributeMap) => {
+        //     return {
+        //         postId: item.postId.S ?? "",
+        //         content: item.content.S
+        //     };
+        // });
+        return list;
     }
 
     async createItem(item: DynamoDBItem): Promise<void> {

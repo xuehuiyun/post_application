@@ -1,16 +1,17 @@
 import {
     PostCreateItemBody,
     PostGetItemQuery,
-    PostGetItemResponse
-} from "../interface/service.interface";
+    PostGetItemResponse,
+    PostGetListResponse
+} from "../interface/post.interface";
 import { ResponseData, SuccessResponse } from "../utils/response.util";
 import { ExpressRouter, Get, asRouter, Put } from "../utils/routes.util";
 import { Request, Response } from "express";
 import * as Log from "../utils/log.util";
 import PostService from "../service/post.service";
 
-@ExpressRouter("/blog")
-class Blog {
+@ExpressRouter("/post")
+class Post {
     /**
      * Get a single Post
      */
@@ -26,6 +27,26 @@ class Blog {
         res.send(SuccessResponse<PostGetItemResponse>(data));
     }
 
+    /**
+     * Get all posts
+     */
+    @Get("/list")
+    async getPostList(
+        req: Request<{}, {}, {}, {}>,
+        res: Response<ResponseData<PostGetListResponse>>
+    ): Promise<void> {
+        const TAG = "POST_GET_LIST";
+        Log.info(TAG);
+
+        const data = await PostService.getList();
+        Log.info("data: ", data);
+        res.send(SuccessResponse<PostGetListResponse>(data));
+    }
+
+    /**
+     *
+     * create a single post
+     */
     @Put("/create")
     async createSinglePost(
         req: Request<{}, {}, PostCreateItemBody, {}>,
@@ -42,4 +63,4 @@ class Blog {
     }
 }
 
-export default asRouter(Blog);
+export default asRouter(Post);

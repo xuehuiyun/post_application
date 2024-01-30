@@ -1,5 +1,5 @@
 import { Router } from "express";
-import Blog from "./blog.route";
+import Post from "./post.route";
 import Login from "./login.route";
 
 const router = Router();
@@ -17,6 +17,6 @@ router.use("/api", (req, res, next) => {
     next();
 });
 
-router.use("/api", [Blog]);
+router.use("/api", [Post]);
 
 export default router;

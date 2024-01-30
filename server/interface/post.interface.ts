@@ -25,3 +25,19 @@ export const PostCreateItemBodySchema = z.object({
 });
 
 export type PostCreateItemBody = z.infer<typeof PostCreateItemBodySchema>;
+
+/**
+ * get file list
+ */
+export const PostGetListQuerySchema = z.undefined();
+
+export type PostGetListQuery = z.infer<typeof PostGetListQuerySchema>;
+
+export const PostGetListResponseSchema = z.array(
+    z.object({
+        postId: z.string(),
+        content: z.string().optional()
+    })
+);
+
+export type PostGetListResponse = z.infer<typeof PostGetListResponseSchema>;

@@ -13,7 +13,7 @@ import { Box } from "@mui/system";
 import { useEffect, useRef, useState } from "react";
 import Checkbox from "../Checkbox";
 import DownIcon from "../SvgIcon/DownIcon";
-import Tag from "../Tag";
+import Tag from "..";
 
 export interface DropdownProps {
     sx?: FormControlProps["sx"];

@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 import useUserProfile from "./hooks/useUserProfile";
 import LoginRoute from "./pages/login/Login.route";
+import FileListRoute from "./pages/file-list/list-view/FileList.route";
 
 function RequireAuth({
     navigateAfterAuth,
@@ -45,10 +46,11 @@ function App() {
                         index
                         element={
                             <RequireAuth>
-                                <div>test</div>
+                                <Navigate to={"/admin/list"} replace={true} />{" "}
                             </RequireAuth>
                         }
                     />
+                    <Route path="list" element={<FileListRoute />} />
                 </Route>
             </Route>
         )
