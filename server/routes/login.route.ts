@@ -4,24 +4,14 @@ import * as Log from "../utils/log.util";
 import { google } from "googleapis";
 import { CookieNames } from "../interface/consts.interface";
 import { generateSession } from "../utils/session.util";
+import { SECRETS } from "../conf/config";
 
 const TAG = "LOG_IN";
 
-/**
- * credentials below subject to be moved to secrete
- */
-const SCOPES = ["https://www.googleapis.com/auth/userinfo.profile"];
-const CLIENT_ID =
-    "345400565297-dph74jf28sm6u9rvovmsgd17c6sj7a44.apps.googleusercontent.com";
-const CLIENT_SECRET = "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";
-const REDIRECT_URI = "http://localhost:9099/google/signin/callback";
-
-const LOGIN_ENC_KEY = "V1RJeFIyUldjRWhQV0ZKclRXcHNOVmRyYUU5Tk1rWlpWVzA1YTFJeWF";
-
 const oauth2Client = new google.auth.OAuth2(
-    CLIENT_ID,
-    CLIENT_SECRET,
-    REDIRECT_URI
+    SECRETS.CLIENT_ID,
+    SECRETS.CLIENT_SECRET,
+    SECRETS.REDIRECT_URI
 );
 
 interface GoogleProfile {
@@ -38,7 +28,7 @@ class Login {
         // Redirect to Google login URL
         const authUrl = oauth2Client.generateAuthUrl({
             access_type: "offline",
-            scope: SCOPES
+            scope: ["https://www.googleapis.com/auth/userinfo.profile"]
         });
         console.log("authurl: ", authUrl);
         res.redirect(authUrl);
@@ -72,7 +62,7 @@ class Login {
                     email: profile.email,
                     name: profile.name
                 },
-                LOGIN_ENC_KEY
+                "V1RJeFIyUldjRWhQV0ZKclRXcHNOVmRyYUU5Tk1rWlpWVzA1YTFJeWF"
             );
 
             res.cookie(CookieNames.SSO_COOKIE, sessionCookie);

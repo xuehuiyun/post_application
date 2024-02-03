@@ -9,6 +9,14 @@ class Config {
     DYNAMODB_TABLE_NAME = "PostTable";
 }
 
+class SecretsData {
+    SCOPES = "";
+    CLIENT_ID = "";
+    CLIENT_SECRET = "";
+    REDIRECT_URI = "";
+    LOGIN_ENC_KEY = "";
+}
+
 // ============================= //
 // Config Loader
 // ============================= //
@@ -72,10 +80,53 @@ function LoadConfig(): Config {
     return config;
 }
 
+function LoadSecrets(): SecretsData {
+    LoadEnvForSecrets();
+
+    const secretsJson = new SecretsData();
+
+    // Override values with process.env
+    for (const key in secretsJson) {
+        const k = key as keyof SecretsData;
+        secretsJson[k] = process.env[k] ?? secretsJson[k];
+
+        if (CONFIG_ENV === CONFIG_ENVS.TEST && !secretsJson[k]) {
+            Log.warn("The secret ", k, " is not set.");
+        }
+    }
+
+    return secretsJson;
+}
+
+// Parse AWS Secrets data and map them into environment vars
+function LoadEnvForSecrets(): void {
+    const unparsedSecretsData = process.env["config.secrets"];
+
+    if (unparsedSecretsData != null) {
+        const secretsJson = JSON.parse(unparsedSecretsData);
+
+        for (const key in secretsJson) {
+            const val = secretsJson[key];
+            if (typeof val === "string") {
+                if (process.env[key] != null) {
+                    Log.warn(
+                        "Secrets data is overriding an environment variable that is already set: ",
+                        key
+                    );
+                }
+
+                process.env[key] = val;
+            }
+        }
+    } else {
+        Log.warn("Did not detect config.secrets environment variable.");
+    }
+}
+
 // ========================== //
 // Export
 // ========================== //
-
+const SECRETS = LoadSecrets();
 const CONFIG = LoadConfig();
 
-export { CONFIG };
+export { CONFIG, SECRETS };
