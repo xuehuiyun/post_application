@@ -28,7 +28,7 @@ class Login {
         // Redirect to Google login URL
         const authUrl = oauth2Client.generateAuthUrl({
             access_type: "offline",
-            scope: ["https://www.googleapis.com/auth/userinfo.profile"]
+            scope: SECRETS.SCOPES
         });
         console.log("authurl: ", authUrl);
         res.redirect(authUrl);
@@ -62,7 +62,7 @@ class Login {
                     email: profile.email,
                     name: profile.name
                 },
-                "V1RJeFIyUldjRWhQV0ZKclRXcHNOVmRyYUU5Tk1rWlpWVzA1YTFJeWF"
+                SECRETS.LOGIN_ENC_KEY
             );
 
             res.cookie(CookieNames.SSO_COOKIE, sessionCookie);
