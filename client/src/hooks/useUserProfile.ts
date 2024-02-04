@@ -5,13 +5,16 @@ const useUserProfile = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     useEffect(() => {
-        const timeoutId = setTimeout(() => {
-            const sessionCookie = getCookie("SDP_SSID");
+        const checkSession = () => {
+            const sessionCookie = getCookie("SESSION_COOKIE");
             setIsLoggedIn(!!sessionCookie);
             setIsLoading(false);
-        }, 2000);
+        };
+        checkSession();
 
-        return () => clearTimeout(timeoutId);
+        const intervalId = setInterval(checkSession, 5000);
+
+        return () => clearInterval(intervalId);
     }, []);
 
     return { isLoading, isLoggedIn };

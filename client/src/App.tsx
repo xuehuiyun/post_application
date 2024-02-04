@@ -53,10 +53,19 @@ function App() {
                             </RequireAuth>
                         }
                     />
-                    <Route path="file">
-                        <Route path="list" element={<FileListRoute />} />
-                        <Route path={":fileId/*"} element={<div>hi</div>} />
-                    </Route>
+
+                    <Route
+                        path="file/list"
+                        element={
+                            <RequireAuth>
+                                <FileListRoute />
+                            </RequireAuth>
+                        }
+                    />
+                    <Route
+                        path={"file/detail/:fileId/*"}
+                        element={<div>hi</div>}
+                    />
                 </Route>
             </Route>
         )

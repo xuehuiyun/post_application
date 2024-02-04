@@ -156,7 +156,7 @@ const FileListTable = ({ data, isLoading, handlers }: FileListTableProps) => {
                     table={table}
                     loading={isLoading}
                     onRowClick={(row) => {
-                        navigate(`/admin/file/${row.original.postId}`);
+                        navigate(`/admin/file/detail/${row.original.postId}`);
                     }}
                 />
             </div>

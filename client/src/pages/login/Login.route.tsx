@@ -11,10 +11,15 @@ const LoginRoute = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (isLoggedIn) {
-            navigate("/admin");
-        }
-    }, [isLoggedIn]);
+        console.log("is logged in: ", isLoggedIn);
+        const checkLoginStatus = async () => {
+            if (isLoggedIn) {
+                navigate("/admin");
+            }
+        };
+
+        checkLoginStatus();
+    }, [isLoggedIn, navigate]);
 
     if (isLoading) {
         return (

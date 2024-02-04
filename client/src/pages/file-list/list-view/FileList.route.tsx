@@ -1,11 +1,11 @@
 import { useNavigate } from "react-router-dom";
-import useCMSFileList from "../../../hooks/useFileList";
+import useFileList from "../../../hooks/useFileList";
 import FileListScreen from "./FileList.screen";
 import FileListTable from "./FileListTable";
 
 const FileListRoute = () => {
     const navigate = useNavigate();
-    const { data, isLoading } = useCMSFileList();
+    const { data, isLoading } = useFileList();
 
     return (
         <FileListScreen

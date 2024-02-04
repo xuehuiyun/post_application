@@ -2,9 +2,9 @@ import { useQuery } from "@tanstack/react-query";
 import zodFetch from "../utils/zodFetch";
 import { PostGetListResponseSchema } from "../../../server/interface/post.interface";
 
-export default function useCMSFileList() {
-    const cmsFileListQuery = useQuery({
-        queryKey: ["cmsFileList"],
+export default function useFileList() {
+    const fileListQuery = useQuery({
+        queryKey: ["fileList"],
         queryFn: async () => {
             const response = await zodFetch(
                 PostGetListResponseSchema,
@@ -16,8 +16,8 @@ export default function useCMSFileList() {
     });
 
     return {
-        data: cmsFileListQuery.data,
-        isLoading: cmsFileListQuery.isPending,
-        isError: cmsFileListQuery.isError
+        data: fileListQuery.data,
+        isLoading: fileListQuery.isPending,
+        isError: fileListQuery.isError
     };
 }

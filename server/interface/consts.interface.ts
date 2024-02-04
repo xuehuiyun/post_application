@@ -1,3 +1,3 @@
 export enum CookieNames {
-    SSO_COOKIE = "SDP_SSID"
+    SSO_COOKIE = "SESSION_COOKIE"
 }
