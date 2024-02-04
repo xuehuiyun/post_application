@@ -28,7 +28,7 @@ class Login {
         // Redirect to Google login URL
         const authUrl = oauth2Client.generateAuthUrl({
             access_type: "offline",
-            scope: SECRETS.SCOPES
+            scope: ["https://www.googleapis.com/auth/userinfo.profile"]
         });
         console.log("authurl: ", authUrl);
         res.redirect(authUrl);
@@ -74,6 +74,8 @@ class Login {
             res.status(500).send("Authentication failed");
         }
     }
+
+    // @Get("/user/self")
 }
 
 export default asRouter(Login);

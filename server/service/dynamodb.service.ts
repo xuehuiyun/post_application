@@ -20,6 +20,8 @@ export interface DynamoDBItem {
 
 export interface ItemInterface {
     postId: string;
+    author: string;
+    title: string;
     content?: string;
 }
 export interface DynamoDBQueryParams {
@@ -150,6 +152,8 @@ class DynamoFileManager implements DynamoDBManager {
                 result.Items?.map((item: AttributeMap) => {
                     return {
                         postId: item.postId.S ?? "",
+                        author: item.author.S ?? "",
+                        title: item.title.S ?? "",
                         content: item.content.S
                     };
                 }) || [];

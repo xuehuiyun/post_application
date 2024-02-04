@@ -10,7 +10,17 @@ const FileListRoute = () => {
     return (
         <FileListScreen
             isLoading={isLoading}
-            children={<FileListTable data={data ?? []} isLoading={isLoading} />}
+            children={
+                <FileListTable
+                    data={data ?? []}
+                    isLoading={isLoading}
+                    handlers={{
+                        onAddFile: () => {},
+                        onClone: () => {},
+                        onDelete: () => {}
+                    }}
+                />
+            }
         />
     );
 };

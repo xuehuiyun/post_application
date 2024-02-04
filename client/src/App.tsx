@@ -46,11 +46,17 @@ function App() {
                         index
                         element={
                             <RequireAuth>
-                                <Navigate to={"/admin/list"} replace={true} />{" "}
+                                <Navigate
+                                    to={"/admin/file/list"}
+                                    replace={true}
+                                />{" "}
                             </RequireAuth>
                         }
                     />
-                    <Route path="list" element={<FileListRoute />} />
+                    <Route path="file">
+                        <Route path="list" element={<FileListRoute />} />
+                        <Route path={":fileId/*"} element={<div>hi</div>} />
+                    </Route>
                 </Route>
             </Route>
         )

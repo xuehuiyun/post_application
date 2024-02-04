@@ -5,3 +5,6 @@ export { default as CheckboxIcon } from "./CheckboxIcon";
 export { default as IndeterminateCheckboxIcon } from "./IndeterminateCheckboxIcon";
 export { default as OutlinedCheckboxIcon } from "./OutlinedCheckboxIcon";
 export { default as TablePaginationIcon } from "./TablePaginationIcon";
+export { default as CancelIcon } from "./CancelIcon";
+export { default as SearchIcon } from "./SearchIcon";
+export { default as TableMoreIcon } from "./TableMoreIcon";

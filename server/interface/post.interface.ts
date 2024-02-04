@@ -36,6 +36,8 @@ export type PostGetListQuery = z.infer<typeof PostGetListQuerySchema>;
 export const PostGetListResponseSchema = z.array(
     z.object({
         postId: z.string(),
+        author: z.string(),
+        title: z.string(),
         content: z.string().optional()
     })
 );
