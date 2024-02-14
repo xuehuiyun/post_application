@@ -76,7 +76,7 @@ const InputField = ({
                             }
                         },
                         "& .MuiInputBase-root": {
-                            fontFamily: "SamsungOne400",
+                            fontFamily: "fantasy",
                             fontSize: "14px",
                             width: "100%",
                             height: "100%",

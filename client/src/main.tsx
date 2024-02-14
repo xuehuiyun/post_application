@@ -11,6 +11,8 @@ import ReactDOM from "react-dom/client";
 
 import React from "react";
 import App from "./App";
+import { SnackbarProvider } from "notistack";
+import Toast from "./components/Toast";
 
 const FIVE_MINUTES_IN_MS = 1000 * 60 * 5;
 
@@ -65,7 +67,21 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
                 <CssBaseline />
                 <HydrateAtoms>
                     <>
-                        <App />
+                        <SnackbarProvider
+                            anchorOrigin={{
+                                vertical: "top",
+                                horizontal: "right"
+                            }}
+                            Components={{
+                                success: Toast,
+                                default: Toast,
+                                error: Toast,
+                                info: Toast,
+                                warning: Toast
+                            }}
+                        >
+                            <App />
+                        </SnackbarProvider>
                     </>
                 </HydrateAtoms>
             </Provider>

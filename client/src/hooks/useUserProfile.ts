@@ -1,34 +1,24 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import zodFetch from "../utils/zodFetch";
+import { GetUserProfileResponseSchema } from "../../../server/interface/user.interface";
 
-const useUserProfile = () => {
-    const [isLoading, setIsLoading] = useState(true);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-    useEffect(() => {
-        const checkSession = () => {
-            const sessionCookie = getCookie("SESSION_COOKIE");
-            setIsLoggedIn(!!sessionCookie);
-            setIsLoading(false);
-        };
-        checkSession();
-
-        const intervalId = setInterval(checkSession, 5000);
-
-        return () => clearInterval(intervalId);
-    }, []);
-
-    return { isLoading, isLoggedIn };
-};
-
-const getCookie = (name: string) => {
-    const cookies = document.cookie.split(";");
-    for (const cookie of cookies) {
-        const [cookieName, cookieValue] = cookie.trim().split("=");
-        if (cookieName === name) {
-            return cookieValue;
+export default function useUserProfile() {
+    const query = useQuery({
+        queryKey: ["userSession"],
+        staleTime: Infinity,
+        refetchOnMount: false, // don't need to continuously fetch on mount
+        queryFn: async () => {
+            const response = await zodFetch(
+                GetUserProfileResponseSchema,
+                "/api/user/profile"
+            );
+            return response?.Data;
         }
-    }
-    return null;
-};
+    });
 
-export default useUserProfile;
+    return {
+        data: query.data,
+        isLoading: query.isPending,
+        isError: query.isError
+    };
+}

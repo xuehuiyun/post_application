@@ -6,20 +6,16 @@ import { handleLogin } from "../../utils/login";
 import LoginScreen from "./Login.screen";
 
 const LoginRoute = () => {
-    const { isLoggedIn, isLoading } = useUserProfile();
+    const { data, isLoading } = useUserProfile();
+    const loggedIn = !!data;
 
     const navigate = useNavigate();
-
+    console.log("is logged in?: ", loggedIn, data);
     useEffect(() => {
-        console.log("is logged in: ", isLoggedIn);
-        const checkLoginStatus = async () => {
-            if (isLoggedIn) {
-                navigate("/admin");
-            }
-        };
-
-        checkLoginStatus();
-    }, [isLoggedIn, navigate]);
+        if (loggedIn) {
+            navigate("/admin");
+        }
+    }, [loggedIn]);
 
     if (isLoading) {
         return (

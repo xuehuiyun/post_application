@@ -112,7 +112,7 @@ const TableColFilter = (props: TableColFilterProps) => {
                                         sx={{
                                             display: "inline-block",
                                             marginLeft: "7px",
-                                            font: "SamsungOne400",
+                                            font: "fantasy",
                                             fontWeight: isChecked
                                                 ? "700"
                                                 : "400"

@@ -1,6 +1,6 @@
 import { Chip, ChipProps } from "@mui/material";
 
-import ThickCancelIcon from "./SvgIcon/ThickCancelIcon";
+import ThickCancelIcon from "../SvgIcon/ThickCancelIcon";
 
 interface TagProps {
     label: string;

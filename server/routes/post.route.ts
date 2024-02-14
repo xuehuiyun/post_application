@@ -1,17 +1,24 @@
 import {
     PostCreateItemBody,
+    PostDeleteItemQuery,
     PostGetItemQuery,
     PostGetItemResponse,
     PostGetListResponse
 } from "../interface/post.interface";
 import { ResponseData, SuccessResponse } from "../utils/response.util";
-import { ExpressRouter, Get, asRouter, Put } from "../utils/routes.util";
+import {
+    ExpressRouter,
+    Get,
+    asRouter,
+    Post,
+    Delete
+} from "../utils/routes.util";
 import { Request, Response } from "express";
 import * as Log from "../utils/log.util";
 import PostService from "../service/post.service";
 
 @ExpressRouter("/post")
-class Post {
+class Blog {
     /**
      * Get a single Post
      */
@@ -47,7 +54,7 @@ class Post {
      *
      * create a single post
      */
-    @Put("/create")
+    @Post("/create")
     async createSinglePost(
         req: Request<{}, {}, PostCreateItemBody, {}>,
         res: Response
@@ -57,10 +64,28 @@ class Post {
 
         await PostService.createItem({
             postId: { S: req.body.postId },
-            content: { S: req.body.content ? req.body.content : "" }
+            content: { S: req.body.content ? req.body.content : "" },
+            title: { S: req.body.title },
+            author: { S: req.body.author },
+            lastModified: { S: req.body.lastModified }
         });
+        res.send(SuccessResponse());
+    }
+
+    /**
+     * delete a single post
+     */
+    @Delete("/delete")
+    async deleteSinglePost(
+        req: Request<{}, {}, {}, PostDeleteItemQuery>,
+        res: Response
+    ): Promise<void> {
+        const TAG = "POST_DELETE_ITEM";
+        Log.info(TAG, "---", req.query.primaryKey);
+
+        await PostService.deleteItem(req.query.primaryKey);
         res.send(SuccessResponse());
     }
 }
 
-export default asRouter(Post);
+export default asRouter(Blog);

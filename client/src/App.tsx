@@ -17,11 +17,11 @@ function RequireAuth({
     children?: React.ReactNode;
     navigateAfterAuth?: string;
 }) {
-    const { isLoggedIn, isLoading } = useUserProfile();
+    const { data, isLoading, isError } = useUserProfile();
     if (isLoading) {
         return <CircularProgress />;
     }
-    if (!isLoggedIn) {
+    if (!data || isError) {
         return <Navigate to="/login" replace={true} />;
     }
 

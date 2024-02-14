@@ -91,9 +91,11 @@ export function createZodFetcher(
             StatusMsg: z.string(),
             Data: schema
         });
+        console.log("response data: ", responseData);
         try {
             return fullResponseSchema.parse(responseData);
         } catch (err) {
+            console.log("err: ", err);
             throw Error(
                 JSON.stringify(
                     { ...responseData, originalArgs: args, error: err },

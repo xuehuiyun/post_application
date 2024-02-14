@@ -59,7 +59,7 @@ const AdvancedFilterContainer = ({
                                     <>
                                         <Typography
                                             width={"150px"}
-                                            fontFamily={"SamsungOne700"}
+                                            fontFamily={"fantasy"}
                                             fontSize={"14px"}
                                             marginTop={"auto"}
                                             marginBottom={"auto"}
@@ -126,7 +126,7 @@ const AdvancedFilterContainer = ({
                     >
                         <Typography
                             width={"150px"}
-                            fontFamily={"SamsungOne700"}
+                            fontFamily={"fantasy"}
                             fontSize={"14px"}
                             marginTop={"auto"}
                             marginBottom={"auto"}

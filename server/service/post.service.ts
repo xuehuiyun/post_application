@@ -6,6 +6,7 @@ import {
 import DynamoFileManager, { DynamoDBItem } from "./dynamodb.service";
 import * as Log from "../utils/log.util";
 import { AttributeMap } from "aws-sdk/clients/dynamodb";
+import { DeleteItemReturnType } from "../interface/dynamodb.interface";
 
 const dynamodb = new DynamoFileManager(
     CONFIG.DYNAMODB_REGION,
@@ -46,12 +47,7 @@ class PostService {
             );
         }
         Log.info("list: ", list);
-        // return list.map((item: AttributeMap) => {
-        //     return {
-        //         postId: item.postId.S ?? "",
-        //         content: item.content.S
-        //     };
-        // });
+
         return list;
     }
 
@@ -59,6 +55,12 @@ class PostService {
         const TAG = "OBJECT_SERVICE_CREATE_ITEM";
         Log.info(TAG, " Create an item");
         await dynamodb.createItem(item);
+    }
+
+    async deleteItem(id: string): Promise<void> {
+        const TAG = "OBJECT_SERVICE_DELETE_ITEM";
+        Log.info(TAG, ` Deleting file id ${id}`);
+        await dynamodb.deleteItem(id);
     }
 }
 

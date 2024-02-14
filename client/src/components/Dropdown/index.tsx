@@ -13,7 +13,7 @@ import { Box } from "@mui/system";
 import { useEffect, useRef, useState } from "react";
 import Checkbox from "../Checkbox";
 import DownIcon from "../SvgIcon/DownIcon";
-import Tag from "..";
+import Tag from "../Tag";
 
 export interface DropdownProps {
     sx?: FormControlProps["sx"];
@@ -87,7 +87,7 @@ const Dropdown = ({
             return (
                 <Typography
                     sx={{
-                        fontFamily: "SamsungOne400",
+                        fontFamily: "fantasy",
                         fontSize: "14px",
                         height: "100%",
                         color: "#C8C8CA",
@@ -114,7 +114,7 @@ const Dropdown = ({
                             sx={{
                                 textJustify: "center",
                                 height: "20px",
-                                fontFamily: "SamsungOne400",
+                                fontFamily: "fantasy",
                                 fontSize: "14px"
                             }}
                         >
@@ -279,7 +279,7 @@ const Dropdown = ({
                                 "& .MuiMenuItem-root": {
                                     "&.Mui-selected": {
                                         "& .MuiTypography-root": {
-                                            fontFamily: "SamsungOne700"
+                                            fontFamily: "fantasy"
                                         }
                                     }
                                 }

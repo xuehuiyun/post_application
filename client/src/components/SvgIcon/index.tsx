@@ -8,3 +8,7 @@ export { default as TablePaginationIcon } from "./TablePaginationIcon";
 export { default as CancelIcon } from "./CancelIcon";
 export { default as SearchIcon } from "./SearchIcon";
 export { default as TableMoreIcon } from "./TableMoreIcon";
+export { default as ErrorIcon } from "./ErrorIcon";
+export { default as InfoIcon } from "./InfoIcon";
+export { default as SuccessIcon } from "./SuccessIcon";
+export { default as WarningIcon } from "./WarningIcon";

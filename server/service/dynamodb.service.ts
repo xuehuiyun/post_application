@@ -5,7 +5,10 @@ import {
     DynamoDBServiceException
 } from "@aws-sdk/client-dynamodb";
 import { DynamoDB } from "aws-sdk";
-import { CreateItemReturnType } from "../interface/dynamodb.interface";
+import {
+    CreateItemReturnType,
+    DeleteItemReturnType
+} from "../interface/dynamodb.interface";
 import * as Log from "../utils/log.util";
 import { AttributeMap } from "aws-sdk/clients/dynamodb";
 
@@ -49,8 +52,11 @@ export interface DynamoDBManager {
     //     updatedAttributes: Partial<DynamoDBItem>
     // ) => Promise<void>;
 
-    // // Delete operation
-    // deleteItem: (primaryKey: string, sortKey?: string) => Promise<void>;
+    // Delete operation
+    deleteItem: (
+        primaryKey: string,
+        sortKey?: string
+    ) => Promise<DeleteItemReturnType>;
 
     // // Query operation
     // queryItems: (queryParams: DynamoDBQueryParams) => Promise<DynamoDBItem[]>;
@@ -73,7 +79,6 @@ class DynamoFileManager implements DynamoDBManager {
     async createItem(item: DynamoDBItem): Promise<CreateItemReturnType> {
         const TAG = "DYNAMODB_CREATE_ITEM";
         Log.info(TAG, "----", item, this.tableName);
-        Log.info("here: ", process.env.AWS_ACCESS_KEY);
 
         try {
             const result = await this.dynamoDBClient
@@ -138,6 +143,43 @@ class DynamoFileManager implements DynamoDBManager {
         }
     }
 
+    async deleteItem(
+        primaryKey: string,
+        sortKey?: string | undefined
+    ): Promise<DeleteItemReturnType> {
+        const TAG = "DYNAMODB_DELETE_ITEM";
+        const key: Record<string, AttributeValue> = {
+            postId: { S: primaryKey },
+            ...(sortKey && { sortKey: { S: sortKey } })
+        };
+
+        Log.info(TAG, "----", key);
+        try {
+            const result = await this.dynamoDBClient
+                .deleteItem({
+                    TableName: this.tableName,
+                    Key: key
+                })
+                .promise();
+            return {
+                status: result.$response.httpResponse.statusCode
+            };
+        } catch (err) {
+            if (err instanceof DynamoDBServiceException) {
+                Log.error("DynamoDB getItem error: ", err);
+                throw new Error(
+                    JSON.stringify({
+                        StatusCode: err.$metadata.httpStatusCode,
+                        StatusMsg: err.name,
+                        Data: err.message
+                    })
+                );
+            } else {
+                throw new Error("Unknown Error");
+            }
+        }
+    }
+
     async getList(): Promise<ItemInterface[]> {
         const TAG = "DYNAMODB_GET_LIST";
         Log.info(TAG);
@@ -154,7 +196,7 @@ class DynamoFileManager implements DynamoDBManager {
                         postId: item.postId.S ?? "",
                         author: item.author.S ?? "",
                         title: item.title.S ?? "",
-                        content: item.content.S
+                        content: item.content.S ?? ""
                     };
                 }) || [];
             return items;

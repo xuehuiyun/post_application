@@ -37,7 +37,7 @@ app.use((req: Request, res: Response, next: NextFunction): void => {
 // =============================== //
 // API routes (need a valid session)
 // =============================== //
-
+// app.use(verifySessionMiddleware);
 /**
  * TODO: implement login
  */

@@ -34,7 +34,7 @@ const TableBody = <TData,>(props: TableProps<TData>) => {
                         width: "100%"
                     },
                     "& thead": {
-                        fontFamily: "SamsungOne700",
+                        fontFamily: "fantasy",
                         borderTop: "1px solid #C8C8CA",
                         borderBottom: "1px solid #E5E5E5",
                         backgroundColor: "#FAFAFA",
@@ -73,7 +73,7 @@ const TableBody = <TData,>(props: TableProps<TData>) => {
                                 }
                             },
                             "& td": {
-                                fontFamily: "SamsungOne400",
+                                fontFamily: "fantasy",
                                 padding: "18px 0 17px 0",
                                 borderBottom: "1px solid #E5E5E5",
                                 "&:first-child": {

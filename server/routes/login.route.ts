@@ -3,8 +3,10 @@ import { Request, Response } from "express";
 import * as Log from "../utils/log.util";
 import { google } from "googleapis";
 import { CookieNames } from "../interface/consts.interface";
-import { generateSession } from "../utils/session.util";
+import { generateSession, verifySession } from "../utils/session.util";
 import { SECRETS } from "../conf/config";
+import { GetUserProfileResponse } from "../interface/user.interface";
+import { ResponseData, SuccessResponse } from "../utils/response.util";
 
 const TAG = "LOG_IN";
 
@@ -14,12 +16,6 @@ const oauth2Client = new google.auth.OAuth2(
     SECRETS.REDIRECT_URI
 );
 
-interface GoogleProfile {
-    resourceName: string;
-    email?: string;
-    name?: string;
-}
-
 @ExpressRouter()
 class Login {
     @Get("/login")
@@ -28,7 +24,10 @@ class Login {
         // Redirect to Google login URL
         const authUrl = oauth2Client.generateAuthUrl({
             access_type: "offline",
-            scope: ["https://www.googleapis.com/auth/userinfo.profile"]
+            scope: [
+                "https://www.googleapis.com/auth/userinfo.profile",
+                "https://www.googleapis.com/auth/userinfo.email"
+            ]
         });
         console.log("authurl: ", authUrl);
         res.redirect(authUrl);
@@ -51,16 +50,17 @@ class Login {
             });
             const peopleApiResponse = await peopleApi.people.get({
                 resourceName: "people/me",
-                personFields: "names,emailAddresses"
+                personFields: "names,emailAddresses,photos"
             });
 
-            const profile: GoogleProfile =
-                peopleApiResponse.data as GoogleProfile;
+            const profile: any = peopleApiResponse.data as any;
+            Log.info("profile: ", profile);
             const sessionCookie = await generateSession(
                 {
                     userId: profile.resourceName,
-                    email: profile.email,
-                    name: profile.name
+                    name: profile.names[0].displayName,
+                    email: profile.emailAddresses[0].value,
+                    photoUrl: profile.photos[0].url
                 },
                 SECRETS.LOGIN_ENC_KEY
             );
@@ -74,8 +74,6 @@ class Login {
             res.status(500).send("Authentication failed");
         }
     }
-
-    // @Get("/user/self")
 }
 
 export default asRouter(Login);

@@ -37,7 +37,7 @@ const TablePagination = <TData,>(props: TablePaginationProps<TData>) => {
             <Typography
                 sx={{
                     textAlign: "center",
-                    fontFamily: "SamsungOne400",
+                    fontFamily: "fantasy",
                     fontWeight: "400",
                     fontSize: "14px",
                     lineHeight: "18px",
@@ -68,7 +68,7 @@ const TablePagination = <TData,>(props: TablePaginationProps<TData>) => {
                 sx={{
                     textAlign: "center",
                     marginLeft: "20px",
-                    fontFamily: "SamsungOne400",
+                    fontFamily: "fantasy",
                     fontWeight: "400",
                     fontSize: "14px",
                     lineHeight: "18px",

@@ -48,8 +48,6 @@ const Configurations: { [key: string]: () => Config } = {
     [CONFIG_ENVS.DEV]: () => ({
         ...new Config(),
         ENV: CONFIG_ENVS.DEV,
-        HOST: "https://dev-admin.sdp.samsungportals.com",
-        MEDIA_BASE_URL: "https://d259avs8luta6c.cloudfront.net",
         PORT: "3000"
     }),
     [CONFIG_ENVS.STG]: () => ({

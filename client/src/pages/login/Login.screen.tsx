@@ -1,7 +1,4 @@
 import { Box, Button, Typography } from "@mui/material";
-// import Button from "../../components/Button";
-
-// import SamsungLogo from "../../assets/logo.png";
 
 interface LoginScreenProps {
     onLoginClick: () => void;
@@ -27,7 +24,7 @@ const LoginScreen = ({ onLoginClick }: LoginScreenProps) => {
                     display: "flex",
                     flexDirection: "column",
                     flexWrap: "wrap",
-                    fontFamily: "SamsungOne400",
+                    fontFamily: "fantasy",
                     fontSize: "14px",
                     fontWeight: "400",
                     lineHeight: "21px",
@@ -51,9 +48,7 @@ const LoginScreen = ({ onLoginClick }: LoginScreenProps) => {
                         padding: "35px 35px 20px",
                         textAlign: "left"
                     }}
-                >
-                    {/* <img src={SamsungLogo} alt="SamsungDevelopersLogo" /> */}
-                </Box>
+                ></Box>
 
                 <Box
                     sx={{
