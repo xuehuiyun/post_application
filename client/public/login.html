@@ -1,0 +1,41 @@
+<html>
+    <head>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    </head>
+
+    <body>
+        <a href="javascript:onLoginClick();">Login</a>
+        <script>
+            function getPopupFeatures() {
+                const left = window.outerWidth / 2 - 260;
+                return (
+                    "toolbar=no,scrollbars=yes,resizable=no,top=50,left=" +
+                    left +
+                    ",width=640,height=720"
+                );
+            }
+
+            let timer = 0;
+
+            function onLoginClick() {
+                let loginWindow = window.open(
+                    "/login",
+                    "login",
+                    getPopupFeatures()
+                );
+                clearInterval(timer);
+                timer = setInterval(function () {
+                    if (loginWindow.closed) {
+                        clearInterval(timer);
+                        console.log("closed");
+                        axios.get("/api/user/profile").then((x) => {
+                            let { data } = x;
+                            let { session } = data;
+                            console.log("session", session);
+                        });
+                    }
+                }, 500);
+            }
+        </script>
+    </body>
+</html>
