@@ -32,7 +32,7 @@ export interface DynamoDBQueryParams {
     expressionAttributeValues: { [key: string]: any };
     filterExpression?: string;
 }
-
+// test
 export interface DynamoDBManager {
     // Create operation
     createItem: (item: DynamoDBItem) => Promise<CreateItemReturnType>;
